@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #05060a;
+  --foreground: #e7f1f4;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  position: relative;
+}
+
+/* CRT scanlines */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.035) 0px,
+    rgba(255, 255, 255, 0.035) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* Vignette */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+@layer utilities {
+  .glow-cyan {
+    box-shadow: 0 0 12px -2px rgba(37, 230, 255, 0.5);
+  }
+  .glow-cyan-lg {
+    box-shadow: 0 0 20px -4px rgba(37, 230, 255, 0.6);
+  }
+}
+
+@layer components {
+  .page-heading {
+    @apply font-display text-4xl font-bold uppercase tracking-widest text-neon-cyan;
+    text-shadow: 0 0 18px rgba(37, 230, 255, 0.55);
+  }
+  .panel-heading {
+    @apply glow-cyan mb-4 inline-block rounded-md border-2 border-neon-cyan/40 bg-noir-900/60 px-3 py-1.5 font-display text-xl font-bold uppercase tracking-widest text-neon-cyan;
+  }
+  .card {
+    @apply rounded-md border border-neon-cyan/20 bg-noir-900/50 p-4 text-left backdrop-blur-sm;
+  }
+  .card-hover {
+    @apply card transition hover:border-neon-cyan/60 hover:bg-noir-800/60;
+  }
+  .link-accent {
+    @apply font-display font-semibold tracking-wide text-neon-cyan transition-colors hover:text-neon-pink hover:underline;
+  }
+  .link-muted {
+    @apply text-sm text-neon-pink underline transition-colors hover:text-neon-cyan;
+  }
+  .link-inline {
+    @apply font-medium text-neon-cyan underline transition-colors hover:text-neon-pink;
+  }
+  .btn-primary {
+    @apply rounded-md bg-neon-amber px-4 py-2 font-display font-semibold uppercase tracking-wide text-noir-950 transition hover:bg-neon-pink hover:text-white;
+    box-shadow: 0 0 16px -2px rgba(255, 176, 46, 0.7);
+  }
+  .btn-outline {
+    @apply rounded-md border border-neon-cyan/40 bg-noir-900/40 px-3 py-1.5 font-display text-sm uppercase tracking-wide text-neon-cyan transition hover:bg-neon-cyan/10;
+  }
+  .field {
+    @apply w-full rounded-md border border-neon-cyan/30 bg-noir-900 px-3 py-2 text-foreground placeholder:text-haze focus:outline-none focus:ring-2 focus:ring-neon-cyan;
+  }
+  .field-label {
+    @apply mb-1 block text-sm font-medium tracking-wide text-neon-cyan/80;
+  }
+  .muted {
+    @apply text-haze;
+  }
+  .stat {
+    @apply font-display font-semibold text-foreground;
+  }
+  .thumb {
+    @apply rounded-md border border-neon-cyan/30 object-cover;
+  }
+  .avatar {
+    @apply rounded-full border-2 border-neon-cyan/50 object-cover;
+  }
+  .alert-error {
+    @apply mb-4 rounded-md border border-red-500/40 bg-red-950/40 p-3 text-sm text-red-300;
+  }
+  .alert-info {
+    @apply mb-4 rounded-md border border-neon-cyan/40 bg-noir-900/40 p-3 text-sm text-neon-cyan;
+  }
+  .badge-link {
+    @apply rounded-md border border-neon-cyan/30 bg-noir-900/40 px-3 py-1.5 text-sm text-haze transition hover:border-neon-cyan hover:bg-neon-cyan/10 hover:text-neon-cyan;
+  }
+  .icon-btn {
+    @apply p-2 text-neon-cyan/70 transition hover:text-neon-cyan;
+  }
+  .site-header {
+    @apply border-b border-neon-cyan/25 bg-noir-950/90 p-4 backdrop-blur;
+  }
+}

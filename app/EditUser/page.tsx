@@ -43,11 +43,24 @@ export default async function EditUser({
         .select("ItemKey")
         .eq("UserKey", user.id);
 
-    const { data: pinnedItems } = (await supabase.rpc("get_item_info", {
+    const { data: pinnedItemInfo } = (await supabase.rpc("get_item_info", {
         ItemKeys: pinnedItemKeys?.map((p) => p.ItemKey) ?? [],
-    })) as { data: { ItemKey: number; ItemName: string; PostImageKey: string; PostRating: number }[] | null };
+    })) as { data: { ItemKey: number; ItemName: string; PostRating: number }[] | null };
 
-    const pinnedItemCount = pinnedItems?.length ?? 0;
+    const { data: pinnedItemImages } = (await supabase.rpc("get_item_image", {
+        ItemKeys: pinnedItemKeys?.map((p) => p.ItemKey) ?? [],
+    })) as { data: { ItemKey: number; PostImagePath: string }[] | null };
+
+    const imagePathByItemKey = new Map(
+        pinnedItemImages?.map((image) => [image.ItemKey, image.PostImagePath])
+    );
+
+    const pinnedItems = (pinnedItemInfo ?? []).map((item) => ({
+        ...item,
+        PostImagePath: imagePathByItemKey.get(item.ItemKey) ?? "",
+    }));
+
+    const pinnedItemCount = pinnedItems.length;
 
     return (
         <main className="flex min-h-screen flex-col items-center gap-6 p-8">
@@ -159,7 +172,7 @@ export default async function EditUser({
                     {pinnedItems?.map((item, i) => {
                         const { data: { publicUrl: itemImageUrl } } = supabase.storage
                             .from("post-images")
-                            .getPublicUrl(item.PostImageKey);
+                            .getPublicUrl(item.PostImagePath);
 
                         const removeThisItem = removePinnedItem.bind(null, item.ItemKey);
 

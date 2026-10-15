@@ -21,7 +21,9 @@ export default async function Topic({ params }: { params: { TopicKey: string } }
         result_limit: 5,
     })) as { data: { ItemKey: number; ItemName: string }[] | null };
 
-    const { data: randomItemKey } = await supabase.rpc("get_random_item");
+    const { data: randomItemKey } = await supabase.rpc("get_random_item", {
+        TopicKey: topicKey,
+    });
 
     const { data: recentPosts } = (await supabase
         .from("Posts")

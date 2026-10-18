@@ -27,7 +27,12 @@ Items, with a full Blade Runner-inspired visual theme.
 - Tailwind CSS
 - TypeScript
 
-## Getting started
+## Live Site
+
+-Vercel hosted
+https://rate-atu2h6vms-xander-kings-projects.vercel.app/home
+
+## Run It Locally
 
 ### 1. Install dependencies
 
@@ -80,9 +85,3 @@ Visit http://localhost:3000.
 - **Row Level Security**: see
   [`supabase_userinfo_rls_policies.sql`](supabase_userinfo_rls_policies.sql)
   for the policies gating reads/writes on `UserInfo`.
-
-## Deploying
-
-Push to GitHub, import into [Vercel](https://vercel.com), and add
-`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` as environment
-variables in the Vercel project settings.

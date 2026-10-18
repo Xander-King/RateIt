@@ -63,13 +63,19 @@ export async function searchItems(query: string) {
     }
 
     const { data } = (await supabase.rpc("get_item_info", { ItemKeys: itemKeys })) as {
-        data: { ItemKey: number; ItemName: string; PostImageKey: string; PostRating: number }[] | null;
+        data: { ItemKey: number; ItemName: string; PostRating: number }[] | null;
     };
+
+    const { data: images } = (await supabase.rpc("get_item_image", { ItemKeys: itemKeys })) as {
+        data: { ItemKey: number; PostImagePath: string }[] | null;
+    };
+
+    const imagePathByItemKey = new Map(images?.map((image) => [image.ItemKey, image.PostImagePath]));
 
     return (data ?? []).map((item) => {
         const { data: { publicUrl } } = supabase.storage
             .from("post-images")
-            .getPublicUrl(item.PostImageKey);
+            .getPublicUrl(imagePathByItemKey.get(item.ItemKey) ?? "");
 
         return { ItemKey: item.ItemKey, ItemName: item.ItemName, ImageUrl: publicUrl, PostRating: item.PostRating };
     });

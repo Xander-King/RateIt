@@ -6,7 +6,6 @@ export default function SignupPage({
 }: {
   searchParams: { error?: string };
 }) {
-  // TODO give everyone a default Profile Pic image until they update it later.
   return (
     <main className="flex min-h-screen items-center justify-center p-8">
       <div className="w-full max-w-sm">

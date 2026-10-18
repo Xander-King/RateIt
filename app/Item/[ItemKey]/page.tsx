@@ -12,13 +12,18 @@ export default async function Item({ params }: { params: { ItemKey: string } }) 
 
     const { data: itemInfoResults } = (await supabase.rpc("get_item_info", {
         ItemKeys: [itemKey],
-    })) as { data: { ItemKey: number; ItemName: string; PostImageKey: string; PostRating: number }[] | null };
+    })) as { data: { ItemKey: number; ItemName: string; PostRating: number }[] | null };
+
+    const { data: itemImageResults } = (await supabase.rpc("get_item_image", {
+        ItemKeys: [itemKey],
+    })) as { data: { ItemKey: number; PostImagePath: string }[] | null };
 
     const itemInfo = itemInfoResults?.[0];
+    const itemImage = itemImageResults?.[0];
 
     const { data: { publicUrl: itemImageUrl } } = supabase.storage
         .from("post-images")
-        .getPublicUrl(itemInfo?.PostImageKey ?? "");
+        .getPublicUrl(itemImage?.PostImagePath ?? "");
 
     const { data: recentPostsRaw } = await supabase
         .from("Posts")

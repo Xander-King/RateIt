@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { updateProfile, removePinnedTopic, removePinnedItem } from "@/lib/actions/user";
 import PinnedTopicSearch from "@/components/PinnedTopicSearch";
 import PinnedItemSearch from "@/components/PinnedItemSearch";
+import ImagePicker from "@/components/ImagePicker";
 
 export default async function EditUser({
     searchParams,
@@ -75,22 +76,15 @@ export default async function EditUser({
             <section className="w-full max-w-sm">
                 <form action={updateProfile} className="flex flex-col gap-4">
                     <div className="flex flex-col items-center gap-2">
-                        <Image
-                            src={publicUrl}
-                            width={96}
-                            height={96}
-                            alt="Current profile picture"
-                            className="h-24 w-24 avatar glow-cyan-lg"
-                        />
                         <label htmlFor="ProfilePic" className="field-label w-full">
                             Change profile picture
                         </label>
-                        <input
+                        <ImagePicker
                             id="ProfilePic"
                             name="ProfilePic"
-                            type="file"
-                            accept="image/*"
-                            className="field"
+                            previewAlt="Profile picture preview"
+                            previewClassName="h-24 w-24 avatar glow-cyan-lg object-cover"
+                            initialPreviewUrl={publicUrl}
                         />
                     </div>
 

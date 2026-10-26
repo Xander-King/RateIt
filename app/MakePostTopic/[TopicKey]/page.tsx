@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createPostForTopic } from "@/lib/actions/posts";
 import RatingSlider from "@/components/RatingSlider";
 import ItemResolver from "@/components/ItemResolver";
+import ImagePicker from "@/components/ImagePicker";
 
 export default async function MakePostTopic({
     params,
@@ -41,13 +42,12 @@ export default async function MakePostTopic({
                         <label htmlFor="PostImage" className="field-label">
                             Photo
                         </label>
-                        <input
+                        <ImagePicker
                             id="PostImage"
                             name="PostImage"
-                            type="file"
-                            accept="image/*"
                             required
-                            className="field"
+                            previewAlt="Selected photo preview"
+                            previewClassName="h-40 w-40 thumb object-cover"
                         />
                     </div>
 

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createPost } from "@/lib/actions/posts";
 import RatingSlider from "@/components/RatingSlider";
+import ImagePicker from "@/components/ImagePicker";
 
 export default async function MakePost({
     params,
@@ -38,13 +39,12 @@ export default async function MakePost({
                         <label htmlFor="PostImage" className="field-label">
                             Photo
                         </label>
-                        <input
+                        <ImagePicker
                             id="PostImage"
                             name="PostImage"
-                            type="file"
-                            accept="image/*"
                             required
-                            className="field"
+                            previewAlt="Selected photo preview"
+                            previewClassName="h-40 w-40 thumb object-cover"
                         />
                     </div>
 
@@ -74,3 +74,8 @@ export default async function MakePost({
         </main>
     )
 }
+// TODO look into allowing image cropping
+// TODO look into removing profile pics no longer in use from storage
+//after a change
+// TODO make post cards look better and less bulky. Maybe only a preview
+//of the description?

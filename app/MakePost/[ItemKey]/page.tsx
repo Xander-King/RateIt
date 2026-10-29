@@ -74,8 +74,4 @@ export default async function MakePost({
         </main>
     )
 }
-// TODO look into allowing image cropping
-// TODO look into removing profile pics no longer in use from storage
-//after a change
-// TODO make post cards look better and less bulky. Maybe only a preview
-//of the description?
+

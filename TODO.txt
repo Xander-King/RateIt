@@ -1,0 +1,18 @@
+// TODO look into removing profile pics no longer in use from storage
+//after a change
+// TODO make post cards look better and less bulky. Maybe only a preview
+//of the description?
+// TODO maybe try to get a new git branch just to practice git stuff.
+// TODO Item search not working
+// TODO user search should display profile pic
+// TODO Booming Topics not displaying.
+// TODO Item image not working
+// TODO Average Item Rating not working
+// TODO nowhere to follow a topic
+// TODO nowhere on the post to actually like it 
+// TODO on home page, if not following anyone don't show feed.
+// TODO everywhere a post shows up the description should be shortened.
+(show a preview)
+// TODO a back arrow on every page would be helpful for navigation.
+I think we could put this in the consistent header bar
+

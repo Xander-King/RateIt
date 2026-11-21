@@ -85,7 +85,7 @@ export default async function Home() {
             </div>
           </section>
 
-          {user && (
+          {user && feedPosts.length > 0 && (
             <section className="w-full max-w-2xl text-center lg:max-w-md">
               <h2 className="panel-heading">
                 <Link href="/Feed">

@@ -3,6 +3,54 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
+export async function likePost(postKey: number) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { error } = await supabase
+    .from("Likes")
+    .insert({
+      PostKey: postKey,
+      UserKey: user.id,
+      LikeDate: new Date().toISOString(),
+    });
+
+  if (error) {
+    redirect(`/Post/${postKey}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  redirect(`/Post/${postKey}`);
+}
+
+export async function unlikePost(postKey: number) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { error } = await supabase
+    .from("Likes")
+    .delete()
+    .eq("PostKey", postKey)
+    .eq("UserKey", user.id);
+
+  if (error) {
+    redirect(`/Post/${postKey}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  redirect(`/Post/${postKey}`);
+}
+
 export async function createPost(itemKey: number, formData: FormData) {
   const rating = Number(formData.get("PostRating"));
   const description = formData.get("PostDescription") as string;

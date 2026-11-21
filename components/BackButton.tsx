@@ -11,7 +11,7 @@ export default function BackButton() {
     useEffect(() => {
         if (skippingLogin.current) {
             skippingLogin.current = false;
-            if (pathname === "/login" || pathname === "/ResetPassword") {
+            if (pathname === "/login" || pathname === "/ResetPassword" || pathname === "/signup") {
                 router.push('/home');
             }
         }

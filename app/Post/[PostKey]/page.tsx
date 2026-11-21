@@ -1,10 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { likePost, unlikePost } from "@/lib/actions/posts";
 
-export default async function Post({ params }: { params: { PostKey: string } }) {
+export default async function Post({
+    params,
+    searchParams,
+}: {
+    params: { PostKey: string };
+    searchParams: { error?: string };
+}) {
     const postKey = Number(params.PostKey);
     const supabase = createClient();
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
 
     const { data: post } = await supabase
         .from("Posts")
@@ -16,6 +26,22 @@ export default async function Post({ params }: { params: { PostKey: string } }) 
         .from("Likes")
         .select("*", { count: "exact", head: true })
         .eq("PostKey", postKey);
+
+    let alreadyLiked = false;
+
+    if (user) {
+        const { data: existingLike } = await supabase
+            .from("Likes")
+            .select("UserKey")
+            .eq("PostKey", postKey)
+            .eq("UserKey", user.id)
+            .maybeSingle();
+
+        alreadyLiked = !!existingLike;
+    }
+
+    const likeThisPost = likePost.bind(null, postKey);
+    const unlikeThisPost = unlikePost.bind(null, postKey);
 
     const { count: commentCount } = await supabase
         .from("Comments")
@@ -37,6 +63,12 @@ export default async function Post({ params }: { params: { PostKey: string } }) 
     return (
         <main className="flex min-h-screen flex-col items-center gap-6 p-8">
             <section className="w-full max-w-2xl lg:max-w-md">
+                {searchParams.error && (
+                    <p className="alert-error">
+                        {searchParams.error}
+                    </p>
+                )}
+
                 <div className="card flex gap-4">
                     <Image
                         src={publicUrl}
@@ -48,6 +80,21 @@ export default async function Post({ params }: { params: { PostKey: string } }) 
                     <div className="flex flex-1 flex-col gap-1">
                         <span className="stat">{post.PostRating} / 5</span>
                         <p className="muted">{post.PostDescription}</p>
+
+                        {user && (
+                            <form action={alreadyLiked ? unlikeThisPost : likeThisPost}>
+                                <button
+                                    type="submit"
+                                    aria-label={alreadyLiked ? "Unlike" : "Like"}
+                                    aria-pressed={alreadyLiked}
+                                    className="icon-btn self-start"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={alreadyLiked ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+                                    </svg>
+                                </button>
+                            </form>
+                        )}
                     </div>
                     <Link href={`/User/${post.UserKey}`} className="link-accent">
                         User

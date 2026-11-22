@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import TopicItemSearch from "@/components/TopicItemSearch";
+import { followTopic, unfollowTopic } from "@/lib/actions/topics";
 
 export default async function Topic({ params }: { params: { TopicKey: string } }) {
     const topicKey = Number(params.TopicKey);
@@ -34,6 +35,22 @@ export default async function Topic({ params }: { params: { TopicKey: string } }
         data: { PostKey: number; PostImagePath: string; PostDescription: string; PostRating: number }[] | null;
     };
 
+    let alreadyFollowed = false;
+
+    if (user) {
+        const { data: followed } = await supabase
+            .from("FollowedTopics")
+            .select("UserKey")
+            .eq("TopicKey", topicKey)
+            .eq("UserKey", user.id)
+            .maybeSingle();
+
+        alreadyFollowed = !!followed;
+    }
+
+        const followThisTopic = followTopic.bind(null, topicKey);
+        const unfollowThisTopic = unfollowTopic.bind(null, topicKey);
+
     return (
         <main className="flex min-h-screen flex-col items-center gap-6 p-8">
             <h1 className="page-heading">{topic?.TopicName}</h1>
@@ -50,6 +67,20 @@ export default async function Topic({ params }: { params: { TopicKey: string } }
                         Make a Post
                     </Link>
                 )}
+            </div>
+
+            <div>
+                {user && (
+                            <form action={alreadyFollowed ? unfollowThisTopic : followThisTopic}>
+                                <button
+                                    type="submit"
+                                    aria-label={alreadyFollowed ? "Unfollow" : "Follow Topic"}
+                                    aria-pressed={alreadyFollowed}
+                                    className="icon-btn self-start"
+                                >{alreadyFollowed ? "Unfollow" : "Follow Topic"}
+                                </button>
+                            </form>
+                        )}
             </div>
 
             <TopicItemSearch topicKey={topicKey} />

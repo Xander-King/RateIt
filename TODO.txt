@@ -9,6 +9,4 @@
 // TODO Item image not working
 // TODO Average Item Rating not working
 // TODO nowhere to follow a topic
-// TODO still some spots I want to reduce the description down to 30
-//chars until they click into the post. 
 

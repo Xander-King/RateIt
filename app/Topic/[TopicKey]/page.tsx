@@ -53,34 +53,35 @@ export default async function Topic({ params }: { params: { TopicKey: string } }
 
     return (
         <main className="flex min-h-screen flex-col items-center gap-6 p-8">
-            <h1 className="page-heading">{topic?.TopicName}</h1>
+            <h1 className="page-heading text-center">{topic?.TopicName}</h1>
 
-            <div className="flex w-full max-w-2xl items-center justify-end gap-4">
-                <Link href={`/Item/${randomItemKey}`} className="link-accent">
-                    Random Item
-                </Link>
-                {user && (
-                    <Link
-                        href={`/MakePostTopic/${topicKey}`}
-                        className="btn-primary text-sm"
-                    >
-                        Make a Post
+            <div className="flex w-full max-w-2xl items-center gap-4">
+                <div>
+                    {user && (
+                        <form action={alreadyFollowed ? unfollowThisTopic : followThisTopic}>
+                            <button
+                                type="submit"
+                                aria-label={alreadyFollowed ? "Unfollow" : "Follow Topic"}
+                                aria-pressed={alreadyFollowed}
+                                className="icon-btn"
+                            >{alreadyFollowed ? "Unfollow" : "Follow Topic"}
+                            </button>
+                        </form>
+                    )}
+                </div>
+                <div className="ml-auto flex items-center gap-4">
+                    <Link href={`/Item/${randomItemKey}`} className="link-accent">
+                        Random Item
                     </Link>
-                )}
-            </div>
-
-            <div>
-                {user && (
-                            <form action={alreadyFollowed ? unfollowThisTopic : followThisTopic}>
-                                <button
-                                    type="submit"
-                                    aria-label={alreadyFollowed ? "Unfollow" : "Follow Topic"}
-                                    aria-pressed={alreadyFollowed}
-                                    className="icon-btn self-start"
-                                >{alreadyFollowed ? "Unfollow" : "Follow Topic"}
-                                </button>
-                            </form>
-                        )}
+                    {user && (
+                        <Link
+                            href={`/MakePostTopic/${topicKey}`}
+                            className="btn-primary text-sm"
+                        >
+                            Make a Post
+                        </Link>
+                    )}
+                </div>
             </div>
 
             <TopicItemSearch topicKey={topicKey} />

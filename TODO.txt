@@ -7,6 +7,4 @@
 // TODO user search should display profile pic
 // TODO Booming Topics not displaying.
 // TODO Item image not working
-// TODO Average Item Rating not working
-// TODO nowhere to follow a topic
 

@@ -18,7 +18,6 @@ export async function followTopic(topicKey: number) {
     .insert({
       TopicKey: topicKey,
       UserKey: user.id,
-      LikeDate: new Date().toISOString(),
     });
 
   if (error) {

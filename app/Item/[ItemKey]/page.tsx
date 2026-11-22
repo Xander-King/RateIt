@@ -11,11 +11,11 @@ export default async function Item({ params }: { params: { ItemKey: string } }) 
     } = await supabase.auth.getUser();
 
     const { data: itemInfoResults } = (await supabase.rpc("get_item_info", {
-        ItemKeys: [itemKey],
+        ItemKeyIn: itemKey,
     })) as { data: { ItemKey: number; ItemName: string; PostRating: number }[] | null };
 
     const { data: itemImageResults } = (await supabase.rpc("get_item_image", {
-        ItemKeys: [itemKey],
+        ItemKeyIn: itemKey,
     })) as { data: { ItemKey: number; PostImagePath: string }[] | null };
 
     const itemInfo = itemInfoResults?.[0];
